@@ -42,6 +42,20 @@
       }
     }
 
+    // Nétodo responsável por executar queries dentro do banco de dados
+    public function execute ($query, $params = []) {
+      // executa  ação no banco corretamente, seguindo os padroes
+      // da PDO, para insert, delete, update não se faz tão necessário
+      // porém para uma query de consulta(select) é recomendado
+      try {
+        $statement = $this->connection->prepare($query);
+        $statement->execute($params);
+        return $statement;
+      } catch(PDOException $e) {
+        die("ERROR:" . $e->getMessage());
+      }
+    }
+
     // Método responsável por inserir dados no banco chave valor
     // retornando o id
     public function insert($values) {
@@ -52,8 +66,28 @@
       // monta a query
       $query = 'INSERT INTO ' .$this->table.' ('.implode(',', $fields).') VALUES ('.implode(',', $binds).')';
 
-      echo $query;
-      exit;
+      // Array values, passa somente os valores do array,
+      // porem precisa que os índices sejam numéricos, por isso
+      // utilizou-se o a array_keys.
+      // Executa o insert.
+      $this->execute($query, array_values($values));
+
+      // Retorna por padrão o último id inserio no banco
+      return $this->connection->lastInsertId();
+    }
+
+    // Método responsável por realizar uma consulta no banco de dados
+    public function select($where = null, $order = null, $limit = null, $fields = '*') {
+      // dados da query
+      $where = strlen($where) ? 'WHERE '. $where : '';
+      $order = strlen($order) ? 'ORDER BY '. $order : '';
+      $limit = strlen($limit) ? 'LIMIT '. $limit : '';
+
+      // monta a query
+      $query = 'SELECT '.$fields.' FROM '.$this->table.' '.$where.' '.$order.' '.$limit;
+
+      // executa a query
+      return $this->execute($query);
     }
 
   }

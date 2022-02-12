@@ -1,15 +1,30 @@
 <?php 
 
   require __DIR__.'/vendor/autoload.php';
-  define('TITLE', 'Cadastrar vaga');
+  define('TITLE', 'Editar vaga');
   use \App\Entity\Vaga;
-  $obVaga = new Vaga;
+
+  // Validação do id
+  if (!isset($_GET['id']) or !is_numeric($_GET['id'])) {
+    header('location: index.php?status=error');
+    exit;
+  }
+
+  // Consulta a vaga
+  $obVaga = Vaga::getVaga($_GET['id']);
+
+  // validar a existencia da vaga
+  if (!$obVaga instanceof Vaga) {
+    header('location: index.php?status=error');
+    exit;
+  }
+
   // validação
   if (isset($_POST['titulo'], $_POST['descricao'], $_POST['ativo'])) {
     $obVaga->titulo    = $_POST['titulo'];
     $obVaga->descricao = $_POST['descricao'];
     $obVaga->ativo     = $_POST['ativo'];
-    $obVaga->cadastrar();
+    //$obVaga->cadastrar();
 
     // sempre que usar um redirecionamento,
     // utilizar o exit para impedir o
@@ -17,7 +32,7 @@
     header('location: index.php?status=success');
     exit;
   }
-  // O VIDEO PAROU EM 1 HORA E 18 MINUTOS E 40 SEGUNDOS
+
   include __DIR__.'/includes/header.php';
   include __DIR__.'/includes/formulario.php';
   include __DIR__.'/includes/footer.php';
