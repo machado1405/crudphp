@@ -90,6 +90,33 @@
       return $this->execute($query);
     }
 
+    // executa atualizações no banco de dados
+    public function update($where, $values) {
+      // dados da query
+      $fields = array_keys($values);
+
+      // monta a query
+      $query = 'UPDATE '.$this->table.' SET '.implode('=?,',$fields).'=? WHERE '.$where;
+
+      // executa a query
+      $this->execute($query, array_values($values));
+
+      // retorna o sucesso
+      return true;
+    }
+
+    // Método responsáve por excluir dados do banco
+    public function delete($where) {
+      // monta a query
+      $query = 'DELETE FROM '.$this->table.' WHERE '.$where;
+
+      // executa a query
+      $this->execute($query);
+
+      // retorna o sucesso
+      return true;
+    }
+
   }
 
 ?>

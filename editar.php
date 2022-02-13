@@ -24,7 +24,7 @@
     $obVaga->titulo    = $_POST['titulo'];
     $obVaga->descricao = $_POST['descricao'];
     $obVaga->ativo     = $_POST['ativo'];
-    //$obVaga->cadastrar();
+    $obVaga->atualizar();
 
     // sempre que usar um redirecionamento,
     // utilizar o exit para impedir o

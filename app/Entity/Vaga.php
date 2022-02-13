@@ -18,6 +18,21 @@ class Vaga {
   // Data de publicação da vaga.
   public $data;
 
+  // Método responsável pro excluir a vaga do banco
+  public function excluir() {
+    return (new Database('vagas'))->delete('id = '.$this->id);
+  }
+
+  // atualiza os dados no banco
+  public function atualizar() {
+    return (new Database('vagas'))->update('id = '.$this->id, [
+      'titulo'    => $this->titulo,
+      'descricao' => $this->descricao,
+      'ativo'     => $this->ativo,
+      'data'      => $this->data
+    ]);
+  }
+
   // Método para cadastrar a vaga no banco, retornando um boolean
   public function cadastrar() {
     // Definir a data
