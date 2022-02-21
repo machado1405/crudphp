@@ -13,20 +13,23 @@
   $filtroStatus = filter_input(INPUT_GET, 'status', FILTER_SANITIZE_STRING);
   $filtroStatus = in_array($filtroStatus, ['s', 'n']) ? $filtroStatus : '';
   
-  // condições sql
+  // condições sql para efetuar a busca
   $condicoes = [
     strlen($busca) ? 'titulo LIKE "%'.str_replace(' ', '%', $busca).'%"' : null,
     strlen($filtroStatus) ? 'ativo = "'.$filtroStatus.'"' : null
   ];
 
-  // remove posições vazias
+  // remove posições vazias da string
   $condicoes = array_filter($condicoes);
 
-  // cláusula where
+  // cláusula where, implode a string adicionando o and para concatenar
   $where = implode(' AND ', $condicoes);
 
+  // chamada das vagas
   $vagas = Vaga::getVagas($where);
 
+  // includes das páginas e componentes necessários
+  //  para compor a página
   include __DIR__.'/includes/header.php';
   include __DIR__.'/includes/listagem.php';
   include __DIR__.'/includes/footer.php';

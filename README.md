@@ -1,6 +1,12 @@
 Repositório de estudos voltados a criação
 de um CRUD com php orientado a objetos.
 
+Como parte dos meus avanços em PHP, implementei
+um filtro de buscas e de status, visando facilitar,
+e aumentar a escalabilidade, uma vez que em um sitema
+maior seria necessário possuir um sistema de filtragem
+e paginação.
+
 Para inicializar esse projeto, você precisará
 ter instalado em sua máquina o composer, gerenciador
 de pacotes em PHP, feito isso, abra o terminal
