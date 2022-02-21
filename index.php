@@ -9,10 +9,18 @@
   // que foi inserido na tag name="", e o terceiro é o tipo de filtro
   $busca = filter_input(INPUT_GET, 'busca', FILTER_SANITIZE_STRING);
 
+  // filtro de status
+  $filtroStatus = filter_input(INPUT_GET, 'status', FILTER_SANITIZE_STRING);
+  $filtroStatus = in_array($filtroStatus, ['s', 'n']) ? $filtroStatus : '';
+  
   // condições sql
   $condicoes = [
-    strlen($busca) ? 'titulo LIKE "%'.str_replace(' ', '%', $busca).'%"' : null
+    strlen($busca) ? 'titulo LIKE "%'.str_replace(' ', '%', $busca).'%"' : null,
+    strlen($filtroStatus) ? 'ativo = "'.$filtroStatus.'"' : null
   ];
+
+  // remove posições vazias
+  $condicoes = array_filter($condicoes);
 
   // cláusula where
   $where = implode(' AND ', $condicoes);
