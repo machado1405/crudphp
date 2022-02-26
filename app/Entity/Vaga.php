@@ -58,6 +58,13 @@ class Vaga {
   public static function getVagas($where = null, $order = null, $limit = null) {
     return (new Database('vagas'))->select($where, $order, $limit)
                                   ->fetchAll(PDO::FETCH_CLASS, self::class);
+  }
+
+  // responsável por obter a quantidade de vagas
+  public static function getQuantidadeVagas($where = null) {
+    return (new Database('vagas'))->select($where, null, null, 'COUNT(*) as qtd')
+                                  ->fetchObject()
+                                  ->qtd;
   } 
 
   // Responsável por buscar uma vaga com base no id

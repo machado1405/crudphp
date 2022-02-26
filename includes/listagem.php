@@ -21,7 +21,7 @@
                       <td>'.($vaga->ativo == 's' ? 'Ativo' : 'Inativo').'</td>
                       <td>'.date('d/m/Y à\s H:i:s', strtotime($vaga->data)).'</td>
                       <td>
-                        <a href="editar.php?id='.$vaga->id.'" class="btn btn-primary" target="_blank">Editar</a>
+                        <a href="editar.php?id='.$vaga->id.'" class="btn btn-primary mb-2 mb-lg-0" target="_blank">Editar</a>
                         <a href="excluir.php?id='.$vaga->id.'" class="btn btn-danger" target="_blank">Excluir</a>
                       </td>
                     </tr>';
@@ -30,7 +30,21 @@
   $resultados = strlen($resultados) ? $resultados : '<tr>
                                                       <td colspan="6" class="text-center">Nenhuma vaga encontrada!</td>
                                                     </tr>';
-
+  
+  // GETS
+  unset($_GET['status']);
+  unset($_GET['pagina']);
+  // monta a url padronizada
+  $gets = http_build_query($_GET);                                                
+  // Paginação
+  $paginacao = '';                                 
+  $paginas = $obPagination->getPages();
+  foreach($paginas as $key=>$pagina) {
+    $class = $pagina['atual'] ? 'btn-primary' : 'btn-light';
+    $paginacao .= '<a href="?pagina='.$pagina['pagina'].'&'.$gets.'">
+                      <button type="button" class="btn '.$class.'">'.$pagina['pagina'].'</button>
+                  </a>';
+  }
 ?>
 <main>
 
@@ -51,7 +65,7 @@
         </div>
         <div class="col">
           <label>Status</label>
-          <select name="status" class="form-control">
+          <select name="filtroStatus" class="form-control">
             <option value="">Ativa/Inativa</option>
             <option value="s" <?= $filtroStatus == 's' ? 'selected' : '' ?>>Ativa</option>
             <option value="n" <?= $filtroStatus == 'n' ? 'selected' : '' ?>>Inativa</option>
@@ -84,6 +98,10 @@
 
     </table>
 
+  </section>
+
+  <section>
+    <?= $paginacao ?>
   </section>
 
 </main>
