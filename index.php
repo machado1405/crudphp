@@ -4,6 +4,11 @@
 
   use \App\Entity\Vaga;
   use \App\Db\Pagination;
+  use \App\Session\Login;
+
+  // Obriga o usuário a estar logado
+  Login::requireLogin();
+
   // Busca, filter input pede 2 parametros, primeiro o tipo
   // se é get/post/put/delete etc... e o segundo é o nome do input
   // que foi inserido na tag name="", e o terceiro é o tipo de filtro
